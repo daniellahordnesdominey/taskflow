@@ -1,18 +1,1373 @@
+
+/* ==========================================
+   TASKFLOW / DIGITAL ATELIER
+   ========================================== */
+
+:root {
+  --background: #f6f3ef;
+  --paper: #fbf9f6;
+  --ink: #302733;
+  --muted: #817b80;
+  --line: #e5dfdb;
+  --lavender: #dcd4e7;
+  --lavender-dark: #9a84a8;
+  --terracotta: #ce806b;
+
+  --serif: "DM Serif Display", Georgia, serif;
+  --sans: "DM Sans", Arial, sans-serif;
+}
+
+/* ==========================================
+   GRUNNLEGGENDE OPPSETT
+   ========================================== */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body,
 #root {
-  max-width: 1200px;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+}
+
+body {
+  font-family: var(--sans);
+  color: var(--ink);
+  background: var(--background);
+}
+
+button,
+input,
+textarea,
+select {
+  font: inherit;
+}
+
+button {
+  cursor: pointer;
+}
+
+#root {
+  min-height: 0;
+}
+
+/* ==========================================
+   FORSIDE / FULLSKJERM
+   ========================================== */
+
+.atelier-page {
+  width: 100%;
+  height: 100vh;
+  height: 100dvh;
+  min-height: 0;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+
+  background: #f4eae1;
+  color: #261c21;
+}
+
+.atelier-frame {
+  position: relative;
+  isolation: isolate;
+
+  display: flex;
+  flex-direction: column;
+
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+  max-width: none;
+
+  margin: 0;
+  padding: 0;
+
+  overflow: hidden;
+  border: none;
+  border-radius: 0;
+  box-shadow: none;
+
+  background: #f4eae1;
+}
+
+/*
+  Bakgrunnsbildet skal fortsatt importeres
+  fra src/png/background.png i LandingPage.tsx.
+*/
+
+.atelier-background {
+  position: absolute;
+  z-index: -2;
+  inset: 0;
+
+  width: 100%;
+  height: 100%;
+
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+
+  animation: atelierImageReveal 1.8s ease-out both;
+}
+
+/* Lett gradient som gjør teksten lesbar */
+
+.atelier-frame::before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  inset: 0;
+
+  pointer-events: none;
+
+  background: linear-gradient(
+    90deg,
+    rgba(250, 244, 239, 0.42) 0%,
+    rgba(250, 244, 239, 0.18) 35%,
+    rgba(250, 244, 239, 0) 65%
+  );
+}
+
+/* ==========================================
+   FORSIDE / NAVIGASJON
+   ========================================== */
+
+.atelier-nav {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  gap: 24px;
+
+  width: 100%;
+  flex-shrink: 0;
+
+  padding: clamp(12px, 2vh, 25px) 5%;
+
+  animation: atelierFadeUp 0.8s ease-out both;
+}
+
+.atelier-logo {
+  display: inline-flex;
+  align-items: center;
+  justify-self: start;
+  gap: 12px;
+
+  color: #261c21;
+  font-family: var(--serif);
+  font-size: 30px;
+  letter-spacing: -1.5px;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.atelier-star {
+  font-family: Arial, sans-serif;
+  font-size: 42px;
+  font-weight: 400;
+  line-height: 1;
+}
+
+.atelier-links {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 34px;
+}
+
+.atelier-links a,
+.atelier-links button {
+  position: relative;
+
+  border: none;
+  padding: 7px 0;
+
+  background: transparent;
+  color: #30262b;
+
+  font-family: Georgia, serif;
+  font-size: 13px;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.atelier-links a::after,
+.atelier-links button::after {
+  content: "";
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+
+  height: 1px;
+  background: currentColor;
+
+  transform: scaleX(0);
+  transform-origin: left;
+
+  transition: transform 0.25s ease;
+}
+
+.atelier-links a:hover::after,
+.atelier-links button:hover::after,
+.atelier-links a.active::after {
+  transform: scaleX(1);
+}
+
+.atelier-nav-button {
+  justify-self: end;
+
+  display: flex;
+  align-items: center;
+  gap: 18px;
+
+  border: none;
+  border-radius: 30px;
+  padding: 13px 20px;
+
+  background: #2c242b;
+  color: white;
+
+  font-family: Georgia, serif;
+  font-size: 12px;
+  white-space: nowrap;
+
+  transition:
+    background 0.3s ease,
+    transform 0.3s ease;
+}
+
+.atelier-nav-button:hover {
+  background: #79677f;
+  transform: translateY(-2px);
+}
+
+/* ==========================================
+   FORSIDE / HOVEDINNHOLD
+   ========================================== */
+
+.atelier-content {
+  display: flex;
+  align-items: center;
+
+  flex: 1;
+  min-height: 0;
+
+  width: 100%;
+  padding: 10px 5%;
+}
+
+.atelier-copy {
+  width: min(100%, 650px);
+}
+
+.atelier-eyebrow {
+  margin: 0 0 18px;
+
+  color: #30262b;
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: 3px;
+  line-height: 1.8;
+}
+
+.atelier-copy h1 {
+  margin: 0;
+
+  font-family: var(--serif);
+  font-size: clamp(42px, min(6.8vw, 11vh), 108px);
+  font-weight: 400;
+  line-height: 0.99;
+  letter-spacing: -0.045em;
+
+  color: #261c21;
+}
+
+.atelier-heading-line {
+  display: block;
+  white-space: nowrap;
+}
+
+.atelier-heading-line em {
+  color: #97809b;
+  font-weight: 400;
+}
+
+.atelier-description {
+  margin: 22px 0;
+
+  color: #443b3e;
+  font-size: 16px;
+  line-height: 1.65;
+}
+
+/* ==========================================
+   FORSIDE / KNAPP
+   ========================================== */
+
+.atelier-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 20px;
+
+  border: none;
+  padding: 0;
+
+  background: transparent;
+  color: #261c21;
+}
+
+.atelier-cta-circle {
+  display: grid;
+  place-items: center;
+
+  width: 52px;
+  height: 52px;
+
+  border-radius: 50%;
+  background: #2c242b;
+  color: white;
+
+  font-size: 24px;
+
+  transition:
+    background 0.3s ease,
+    transform 0.3s ease;
+}
+
+.atelier-cta:hover .atelier-cta-circle {
+  background: #97809b;
+  transform: rotate(45deg);
+}
+
+.atelier-cta-label {
+  padding-bottom: 5px;
+  border-bottom: 1px solid #261c21;
+
+  font-family: Georgia, serif;
+  font-size: 14px;
+}
+
+/* ==========================================
+   FORSIDE / FOOTER
+   ========================================== */
+
+.atelier-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+
+  width: 100%;
+  flex-shrink: 0;
+
+  padding: 12px 5%;
+
+  border-top: 1px solid rgba(58, 43, 47, 0.12);
+  background: rgba(248, 243, 239, 0.45);
+
+  color: #51474b;
+  font-size: 9px;
+  letter-spacing: 3px;
+}
+
+.atelier-about {
+  display: none;
+}
+
+/* ==========================================
+   ARBEIDSROM / FULLSKJERM
+   ========================================== */
+
+.workspace-page {
+  display: flex;
+  flex-direction: column;
+
+  width: 100%;
+  height: 100vh;
+  height: 100dvh;
+  min-height: 0;
+
+  overflow: hidden;
+
+  background: var(--background);
+  color: var(--ink);
+}
+
+/* ==========================================
+   ARBEIDSROM / LOGO
+   ========================================== */
+
+.brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+
+  font-family: var(--serif);
+  font-size: 26px;
+  letter-spacing: -1px;
+}
+
+.brand-symbol {
+  font-family: var(--sans);
+  font-size: 32px;
+  line-height: 1;
+}
+
+.brand-dot {
+  color: var(--terracotta);
+  margin-left: -10px;
+}
+
+.brand-button {
+  border: none;
+  padding: 0;
+
+  background: transparent;
+  color: var(--ink);
+}
+
+.section-kicker {
+  color: var(--terracotta);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 2px;
+}
+
+/* ==========================================
+   ARBEIDSROM / NAVIGASJON
+   ========================================== */
+
+.workspace-nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  width: 100%;
+  max-width: 1500px;
+  flex-shrink: 0;
+
   margin: 0 auto;
-  padding: 2rem;
+  padding: 14px 5%;
+
+  border-bottom: 1px solid var(--line);
 }
 
-h1 {
-  color: #2563eb;
-  font-size: 2.5rem;
+.workspace-nav-right {
+  display: flex;
+  align-items: center;
+  gap: 40px;
 }
 
-h2 {
-  color: #1e293b;
+.workspace-nav-right span {
+  color: var(--muted);
+  font-size: 10px;
+  letter-spacing: 1.5px;
 }
 
-p {
-  color: #64748b;
+.workspace-nav-right button {
+  border: none;
+  background: transparent;
+
+  color: var(--ink);
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.workspace-nav-right button:hover {
+  color: var(--terracotta);
+}
+
+/* ==========================================
+   ARBEIDSROM / HOVEDLAYOUT
+   ========================================== */
+
+.workspace-main.workspace-layout {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+
+  flex: 1;
+  min-height: 0;
+
+  width: 100%;
+  max-width: 1500px;
+
+  margin: 0 auto;
+  padding: 18px 5% 12px;
+
+  overflow: hidden;
+}
+
+/* ==========================================
+   ARBEIDSROM / FELLES SEKSJONER
+   ========================================== */
+
+.workspace-panel {
+  background: var(--paper);
+  border: 1px solid var(--line);
+  padding: 22px 28px;
+}
+
+.panel-label {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+
+  margin-bottom: 18px;
+
+  color: #a2747c;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 1.8px;
+}
+
+.panel-label span:last-child {
+  color: #a49aa0;
+}
+
+/* ==========================================
+   01 / OVERSIKT
+   ========================================== */
+
+.overview-panel {
+  flex-shrink: 0;
+}
+
+.overview-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 30px;
+}
+
+.overview-intro h1 {
+  margin: 0;
+
+  font-family: var(--serif);
+  font-size: clamp(42px, 4.6vw, 68px);
+  font-weight: 400;
+  letter-spacing: -2.5px;
+  line-height: 1.05;
+}
+
+.overview-intro h1 em {
+  color: var(--lavender-dark);
+}
+
+.overview-intro p {
+  margin: 10px 0 0;
+
+  color: var(--muted);
+  font-size: 13px;
+}
+
+/* ==========================================
+   OVERSIKT / FREMDRIFT
+   ========================================== */
+
+.overview-progress {
+  width: 240px;
+  flex-shrink: 0;
+}
+
+.progress-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  margin-bottom: 10px;
+}
+
+.progress-top span,
+.progress-caption {
+  color: var(--muted);
+  font-size: 10px;
+  letter-spacing: 1px;
+}
+
+.progress-top strong {
+  font-family: var(--serif);
+  font-size: 28px;
+  font-weight: 400;
+}
+
+.progress-track {
+  height: 5px;
+  margin-bottom: 9px;
+
+  background: var(--lavender);
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  background: var(--terracotta);
+
+  transition: width 0.4s ease;
+}
+
+/* ==========================================
+   OVERSIKT / STATISTIKK
+   ========================================== */
+
+.overview-stats {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 25px;
+
+  margin-top: 22px;
+  padding-top: 16px;
+
+  border-top: 1px solid var(--line);
+}
+
+.stat-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.stat-item + .stat-item {
+  border-left: 1px solid var(--line);
+  padding-left: 25px;
+}
+
+.stat-item span {
+  color: #92878d;
+  font-size: 10px;
+  letter-spacing: 1.1px;
+}
+
+.stat-item strong {
+  font-family: var(--serif);
+  font-size: 32px;
+  font-weight: 400;
+}
+
+/* ==========================================
+   02 / ARBEIDSBORD
+   ========================================== */
+
+.workboard-panel {
+  display: flex;
+  flex-direction: column;
+
+  flex: 1;
+  min-height: 0;
+
+  padding-bottom: 15px;
+}
+
+.workboard-panel .panel-label {
+  flex-shrink: 0;
+  margin-bottom: 10px;
+}
+
+.workboard-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+
+  flex-shrink: 0;
+  margin-bottom: 20px;
+}
+
+.workboard-heading h2 {
+  margin: 0;
+
+  font-family: var(--serif);
+  font-size: clamp(35px, 4vw, 52px);
+  font-weight: 400;
+  letter-spacing: -2px;
+}
+
+.workboard-heading h2 span {
+  color: var(--terracotta);
+}
+
+.workboard-heading p {
+  margin: 5px 0 0;
+
+  color: var(--muted);
+  font-size: 12px;
+}
+
+/* ==========================================
+   ARBEIDSBORD / KNAPPER
+   ========================================== */
+
+.add-task-button,
+.submit-task {
+  border: none;
+  padding: 13px 20px;
+
+  background: var(--ink);
+  color: white;
+
+  font-size: 13px;
+
+  transition:
+    background 0.2s ease,
+    transform 0.2s ease;
+}
+
+.add-task-button {
+  flex-shrink: 0;
+}
+
+.add-task-button:hover,
+.submit-task:hover {
+  background: #6c526e;
+  transform: translateY(-2px);
+}
+
+/* ==========================================
+   ARBEIDSBORD / FILTER
+   ========================================== */
+
+.task-filters {
+  display: flex;
+  gap: 30px;
+
+  flex-shrink: 0;
+  margin-bottom: 0;
+
+  border-bottom: 1px solid var(--line);
+  overflow-x: auto;
+}
+
+.task-filters button {
+  flex-shrink: 0;
+
+  border: none;
+  border-bottom: 2px solid transparent;
+  padding: 0 0 14px;
+
+  background: transparent;
+  color: var(--muted);
+
+  font-size: 13px;
+}
+
+.task-filters button:hover {
+  color: var(--ink);
+}
+
+.task-filters button.active {
+  color: var(--ink);
+  border-bottom-color: var(--ink);
+}
+
+/* ==========================================
+   ARBEIDSBORD / OPPGAVELISTE
+   ========================================== */
+
+.editorial-task-list {
+  flex: 1;
+  min-height: 0;
+
+  overflow-y: auto;
+  overflow-x: hidden;
+
+  scrollbar-width: thin;
+  scrollbar-color: #c4b8c8 transparent;
+}
+
+.editorial-task-list::-webkit-scrollbar {
+  width: 6px;
+}
+
+.editorial-task-list::-webkit-scrollbar-thumb {
+  background: #c4b8c8;
+  border-radius: 10px;
+}
+
+.editorial-task {
+  display: grid;
+  grid-template-columns: 35px minmax(0, 1fr) 155px 30px;
+  align-items: center;
+  gap: 16px;
+
+  min-height: 70px;
+  padding: 10px 6px;
+
+  border-bottom: 1px solid var(--line);
+
+  transition:
+    background 0.2s ease,
+    padding-left 0.2s ease;
+}
+
+.editorial-task:hover {
+  background: rgba(220, 212, 231, 0.25);
+  padding-left: 14px;
+}
+
+.editorial-task-number {
+  color: #a49aa2;
+  font-family: var(--serif);
+  font-size: 20px;
+}
+
+.editorial-task-content {
+  min-width: 0;
+}
+
+.editorial-task-content h3 {
+  margin: 0 0 6px;
+
+  font-family: var(--serif);
+  font-size: 21px;
+  font-weight: 400;
+  overflow-wrap: anywhere;
+}
+
+.editorial-task-content p {
+  margin: 0;
+
+  color: var(--muted);
+  font-size: 12px;
+  overflow-wrap: anywhere;
+}
+
+/* ==========================================
+   ARBEIDSBORD / STATUS
+   ========================================== */
+
+.task-status-select {
+  width: 100%;
+
+  border: none;
+  border-radius: 3px;
+  padding: 10px;
+
+  color: var(--ink);
+  font-size: 12px;
+}
+
+.task-status-select.TODO {
+  background: #e9e2eb;
+}
+
+.task-status-select.IN_PROGRESS {
+  background: #f0ded3;
+}
+
+.task-status-select.DONE {
+  background: #dfe6dc;
+}
+
+/* ==========================================
+   ARBEIDSBORD / SLETT OPPGAVE
+   ========================================== */
+
+.delete-task {
+  border: none;
+  background: transparent;
+
+  color: #9b8d97;
+  font-size: 28px;
+
+  transition:
+    color 0.2s ease,
+    transform 0.2s ease;
+}
+
+.delete-task:hover {
+  color: #bb554a;
+  transform: scale(1.15);
+}
+
+/* ==========================================
+   ARBEIDSBORD / BUNNLINJE
+   ========================================== */
+
+.task-list-footer {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+
+  flex-shrink: 0;
+  margin-top: 12px;
+
+  color: var(--muted);
+  font-size: 10px;
+  letter-spacing: 1.5px;
+}
+
+.empty-state {
+  padding: 35px 0;
+
+  font-family: var(--serif);
+  font-size: 25px;
+  color: var(--muted);
+}
+
+/* ==========================================
+   ARBEIDSBORD / NY OPPGAVE
+   ========================================== */
+
+.task-form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+
+  flex-shrink: 1;
+  min-height: 0;
+  max-height: 38vh;
+
+  padding: 18px 22px;
+  margin-bottom: 15px;
+
+  overflow-y: auto;
+
+  background: #ebe5ed;
+
+  animation: atelierFadeUp 0.4s ease-out both;
+}
+
+.form-heading {
+  margin-bottom: 10px;
+}
+
+.form-heading span,
+.task-form label {
+  color: #73677b;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 1.5px;
+}
+
+.form-heading h3 {
+  margin: 12px 0 0;
+
+  font-family: var(--serif);
+  font-size: 32px;
+  font-weight: 400;
+}
+
+.task-form input,
+.task-form textarea {
+  width: 100%;
+  flex-shrink: 0;
+
+  border: 1px solid #cfc5d2;
+  border-radius: 0;
+  padding: 12px;
+
+  background: #f9f7fa;
+  color: var(--ink);
+}
+
+.submit-task {
+  align-self: flex-start;
+  flex-shrink: 0;
+  margin-top: 10px;
+}
+
+/* ==========================================
+   ARBEIDSROM / FOOTER
+   ========================================== */
+
+.workspace-footer {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+
+  width: 100%;
+  max-width: 1500px;
+  flex-shrink: 0;
+
+  margin: 0 auto;
+  padding: 10px 5%;
+
+  color: var(--muted);
+  font-size: 10px;
+  letter-spacing: 1.5px;
+}
+
+/* ==========================================
+   ANIMASJONER
+   ========================================== */
+
+@keyframes atelierFadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(22px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes atelierImageReveal {
+  from {
+    opacity: 0;
+    transform: scale(1.035);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.atelier-fade {
+  animation: atelierFadeUp 0.85s
+    cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.atelier-fade.delay-1 {
+  animation-delay: 0.15s;
+}
+
+.atelier-fade.delay-2 {
+  animation-delay: 0.3s;
+}
+
+.atelier-fade.delay-3 {
+  animation-delay: 0.5s;
+}
+
+.atelier-fade.delay-4 {
+  animation-delay: 0.7s;
+}
+
+/* ==========================================
+   NETTBRETT
+   ========================================== */
+
+@media (max-width: 1100px) {
+  .atelier-nav {
+    grid-template-columns: 1fr auto;
+  }
+
+  .atelier-links {
+    grid-column: 1 / -1;
+    grid-row: 2;
+    justify-content: center;
+  }
+
+  .atelier-copy h1 {
+    font-size: clamp(42px, min(7.5vw, 10vh), 90px);
+  }
+
+  .atelier-frame::before {
+    background: linear-gradient(
+      90deg,
+      rgba(250, 244, 239, 0.7),
+      rgba(250, 244, 239, 0.2) 75%
+    );
+  }
+}
+
+/* ==========================================
+   MOBIL
+   ========================================== */
+
+@media (max-width: 700px) {
+  /* Forside */
+
+  .atelier-page,
+  .atelier-frame {
+    width: 100%;
+    height: 100dvh;
+    min-height: 0;
+  }
+
+  .atelier-background {
+    background-position: 63% center;
+  }
+
+  .atelier-frame::before {
+    background: linear-gradient(
+      180deg,
+      rgba(250, 244, 239, 0.94) 0%,
+      rgba(250, 244, 239, 0.88) 43%,
+      rgba(250, 244, 239, 0.08) 100%
+    );
+  }
+
+  .atelier-nav {
+    gap: 10px;
+    padding: 12px 5%;
+  }
+
+  .atelier-logo {
+    font-size: 24px;
+  }
+
+  .atelier-star {
+    font-size: 32px;
+  }
+
+  .atelier-nav-button {
+    gap: 8px;
+    padding: 10px 12px;
+    font-size: 10px;
+  }
+
+  .atelier-links {
+    gap: 16px;
+  }
+
+  .atelier-links a,
+  .atelier-links button {
+    font-size: 12px;
+  }
+
+  .atelier-content {
+    align-items: flex-start;
+    padding: clamp(25px, 6vh, 65px) 6% 10px;
+  }
+
+  .atelier-eyebrow {
+    max-width: 280px;
+    font-size: 8px;
+    letter-spacing: 2px;
+  }
+
+  .atelier-copy h1 {
+    font-size: clamp(38px, 10vw, 68px);
+    letter-spacing: -2px;
+  }
+
+  .atelier-description {
+    margin: 16px 0;
+    font-size: 13px;
+  }
+
+  .atelier-cta-circle {
+    width: 44px;
+    height: 44px;
+  }
+
+  .atelier-footer {
+    padding: 10px 5%;
+    font-size: 8px;
+    letter-spacing: 1.5px;
+  }
+
+  /* Arbeidsrom */
+
+  .workspace-nav-right span {
+    display: none;
+  }
+
+  .workspace-main.workspace-layout {
+    gap: 10px;
+    padding: 10px 4%;
+  }
+
+  .workspace-panel {
+    padding: 15px;
+  }
+
+  .panel-label {
+    margin-bottom: 10px;
+    font-size: 9px;
+    letter-spacing: 1px;
+  }
+
+  .panel-label span:last-child {
+    display: none;
+  }
+
+  .overview-top {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 15px;
+  }
+
+  .overview-intro h1 {
+    font-size: 40px;
+  }
+
+  .overview-progress {
+    width: 100%;
+  }
+
+  .overview-stats {
+    gap: 10px;
+    margin-top: 15px;
+  }
+
+  .stat-item {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 5px;
+  }
+
+  .stat-item + .stat-item {
+    padding-left: 10px;
+  }
+
+  .stat-item span {
+    font-size: 8px;
+  }
+
+  .stat-item strong {
+    font-size: 27px;
+  }
+
+  .workboard-heading {
+    align-items: flex-start;
+    gap: 10px;
+    margin-bottom: 12px;
+  }
+
+  .workboard-heading h2 {
+    font-size: 34px;
+  }
+
+  .workboard-heading p {
+    display: none;
+  }
+
+  .add-task-button {
+    padding: 10px 12px;
+    font-size: 11px;
+  }
+
+  .task-filters {
+    gap: 20px;
+  }
+
+  .task-filters button {
+    font-size: 12px;
+  }
+
+  .editorial-task {
+    grid-template-columns: 25px minmax(0, 1fr) 26px;
+    gap: 10px;
+    padding: 15px 0;
+  }
+
+  .editorial-task:hover {
+    padding-left: 0;
+  }
+
+  .task-status-select {
+    grid-column: 2;
+    grid-row: 2;
+    max-width: 170px;
+  }
+
+  .delete-task {
+    grid-column: 3;
+    grid-row: 1 / span 2;
+  }
+
+  .task-form {
+    padding: 15px;
+    max-height: 35vh;
+  }
+
+  .workspace-footer {
+    flex-wrap: wrap;
+    font-size: 8px;
+  }
+}
+
+/* ==========================================
+   LAVE SKJERMER
+   ========================================== */
+
+@media (max-height: 800px) {
+  /* Forside */
+
+  .atelier-nav {
+    padding-top: 10px;
+    padding-bottom: 10px;
+  }
+
+  .atelier-copy h1 {
+    font-size: clamp(38px, min(6vw, 9vh), 80px);
+  }
+
+  .atelier-eyebrow {
+    margin-bottom: 12px;
+  }
+
+  .atelier-description {
+    margin-top: 15px;
+    margin-bottom: 15px;
+    font-size: 14px;
+  }
+
+  .atelier-cta-circle {
+    width: 44px;
+    height: 44px;
+  }
+
+  .atelier-footer {
+    padding-top: 9px;
+    padding-bottom: 9px;
+  }
+
+  /* Arbeidsrom */
+
+  .workspace-main.workspace-layout {
+    gap: 12px;
+    padding-top: 12px;
+    padding-bottom: 8px;
+  }
+
+  .workspace-panel {
+    padding: 14px 20px;
+  }
+
+  .panel-label {
+    margin-bottom: 10px;
+  }
+
+  .overview-intro h1 {
+    font-size: 44px;
+  }
+
+  .overview-stats {
+    margin-top: 12px;
+    padding-top: 10px;
+  }
+
+  .stat-item strong {
+    font-size: 27px;
+  }
+
+  .workboard-heading {
+    margin-bottom: 10px;
+  }
+
+  .workboard-heading h2 {
+    font-size: 37px;
+  }
+
+  .editorial-task {
+    min-height: 60px;
+  }
+}
+
+/* ==========================================
+   TILGJENGELIGHET
+   ========================================== */
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+    transition: none !important;
+    scroll-behavior: auto !important;
+  }
 }
