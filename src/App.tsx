@@ -1,17 +1,19 @@
-import { useState } from "react";
-import heroImg from "./assets/hero.png";
-import reactLogo from "./assets/react.svg";
-import viteLogo from "./assets/vite.svg";
+import { mockTasks } from "./data/mockTasks";
+import TaskCard from "./components/TaskCard";
 import "./App.css";
 
 function App() {
   return (
-    <div>
+    <main>
       <h1>TaskFlow</h1>
       <h2>Mine oppgaver</h2>
-      <p>Velkommen til mitt prosjektstyringssystem!</p>
-      <p>Du har ingen oppgaver ennå.</p>
-    </div>
+
+      <div className="task-list">
+        {mockTasks.map((task) => (
+          <TaskCard key={task.id} task={task} />
+        ))}
+      </div>
+    </main>
   );
 }
 
